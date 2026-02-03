@@ -209,4 +209,47 @@ export class Pmu {
     return this.http.post(`${this.baseUrl}/modules/pmu/other-expense/delete.php`, data);
   }
 
+
+  // ---------- PMU REPORTS METHODS ----------
+  /* ===================== REPORTS ===================== */
+
+  getAccessoriesReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/accessories.php`,
+      { firm_code: firmCode });
+  }
+
+  getAssetReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/assets.php`,
+      { firm_code: firmCode });
+  }
+
+  getLabourReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/labour.php`,
+      { firm_code: firmCode });
+  }
+
+  getWoodReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/wood.php`,
+      { firm_code: firmCode });
+  }
+
+  getPlywoodReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/plywood.php`,
+      { firm_code: firmCode });
+  }
+
+  getTeamLedgerReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/team.php`,
+      { firm_code: firmCode });
+  }
+
+  getOtherExpenseReport(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/other-expense.php`, { firm_code: firmCode });
+  }
+
+  getAllExpenseSummary(firmCode: string) {
+    return this.http.post(`${this.baseUrl}/modules/pmu/reports/all-expenses.php`,
+      { firm_code: firmCode });
+  }
+
 }
