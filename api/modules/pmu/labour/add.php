@@ -12,7 +12,6 @@ $required = [
   'team_name',
   'basis',
   'total_amount',
-  'paid',
   'created_by'
 ];
 
@@ -29,10 +28,10 @@ if (!in_array($data['basis'], ['COT', 'Daily'])) {
   exit;
 }
 
-if (!in_array($data['paid'], ['Yes', 'No'])) {
-  echo json_encode(["success" => false, "message" => "Invalid paid value"]);
-  exit;
-}
+// if (!in_array($data['paid'], ['Yes', 'No'])) {
+//   echo json_encode(["success" => false, "message" => "Invalid paid value"]);
+//   exit;
+// }
 
 /* ---------------- CONDITIONAL FIELDS ---------------- */
 $cotCount = $ratePerCot = $dailyCount = $ratePerDay = null;
@@ -41,8 +40,8 @@ if ($data['basis'] === 'COT') {
   $cotCount = $data['cot_count'];
   $ratePerCot = $data['rate_per_cot'];
 } else {
-  $dailyCount = $data['daily_count'];
-  $ratePerDay = $data['rate_per_day'];
+  $dailyCount = $data['labour_count'];
+  $ratePerDay = $data['rate_per_labour'];
 }
 
 /* ---------------- INSERT ---------------- */
@@ -50,14 +49,14 @@ $stmt = $conn->prepare("
 INSERT INTO pmu_labour_cost (
  firm_code, work_date, team_name, basis,
  cot_count, rate_per_cot,
- daily_count, rate_per_day,
- total_amount, paid, remarks, created_by
+ labour_count, rate_per_labour,
+ total_amount,  remarks, created_by
 )
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+VALUES (?,?,?,?,?,?,?,?,?,?,?)
 ");
 
 $stmt->bind_param(
-  "ssssiddidsss",
+  "ssssiddidss",
   $data['firm_code'],
   $data['work_date'],
   $data['team_name'],
@@ -67,7 +66,6 @@ $stmt->bind_param(
   $dailyCount,
   $ratePerDay,
   $data['total_amount'],
-  $data['paid'],
   $data['remarks'],
   $data['created_by']
 );

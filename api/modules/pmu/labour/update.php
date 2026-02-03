@@ -11,8 +11,7 @@ $required = [
     'team_name',
     'basis',
     'total_amount',
-    'paid'
-];
+    ];
 
 foreach ($required as $f) {
     if (!isset($data[$f])) {
@@ -28,8 +27,8 @@ if ($data['basis'] === 'COT') {
     $cotCount = $data['cot_count'];
     $ratePerCot = $data['rate_per_cot'];
 } else {
-    $dailyCount = $data['daily_count'];
-    $ratePerDay = $data['rate_per_day'];
+    $dailyCount = $data['labour_count'];
+    $ratePerDay = $data['rate_per_labour'];
 }
 
 /* ---------------- UPDATE ---------------- */
@@ -41,16 +40,15 @@ UPDATE pmu_labour_cost SET
  basis=?,
  cot_count=?,
  rate_per_cot=?,
- daily_count=?,
- rate_per_day=?,
+ labour_count=?,
+ rate_per_labour=?,
  total_amount=?,
- paid=?,
  remarks=?
 WHERE id=?
 ");
 
 $stmt->bind_param(
-    "ssssiddidssi",
+    "ssssiddidsi",
     $data['firm_code'],
     $data['work_date'],
     $data['team_name'],
@@ -60,7 +58,6 @@ $stmt->bind_param(
     $dailyCount,
     $ratePerDay,
     $data['total_amount'],
-    $data['paid'],
     $data['remarks'],
     $data['id']
 );

@@ -17,7 +17,7 @@ $stmt = $conn->prepare("
     remarks
   FROM pmu_wood_expense
   WHERE firm_code = ?
-  ORDER BY expense_date DESC
+  ORDER BY expense_date DESC, id DESC
 ");
 
 $stmt->bind_param("s", $data['firm_code']);
@@ -25,6 +25,7 @@ $stmt->execute();
 
 $res = $stmt->get_result();
 $rows = [];
-while ($r = $res->fetch_assoc()) $rows[] = $r;
+while ($r = $res->fetch_assoc())
+    $rows[] = $r;
 
 echo json_encode(["success" => true, "data" => $rows]);
