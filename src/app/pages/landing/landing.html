@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h4>Select Firm</h4>
+
+    <div>
+      <button *ngIf="role === 'Admin'" class="btn btn-warning me-2">
+        Manage Users
+      </button>
+      <button class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="row mt-3" *ngIf="!loading">
+    <div class="col-md-4 mb-3" *ngFor="let f of firms">
+      <div class="card p-3 text-center shadow-sm">
+        <h5>{{ f.firm_name }}</h5>
+        <button class="btn btn-primary mt-2" (click)="openFirm(f)">
+          Enter
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

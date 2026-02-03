@@ -1,0 +1,25 @@
+<div class="container mt-3">
+
+  <h3>PMU REPORTS</h3>
+
+  <section>
+    <h5>ALL EXPENSES</h5>
+    <button (click)="exportExcel('ALL',general)">Excel</button>
+    <button (click)="exportPdf('ALL',general)">PDF</button>
+  </section>
+
+  <section *ngFor="let s of [
+{ name: 'WOOD', data: wood },
+{ name: 'PLYWOOD', data: plywood },
+{ name: 'ACCESSORIES', data: accessories },
+{ name: 'LABOUR', data: labour },
+{ name: 'ASSET', data: assets },
+{ name: 'TEAM_LEDGER', data: team },
+{ name: 'OTHER_EXPENSE', data: other }
+]">
+    <h5>{{s.name}}</h5>
+    <button (click)="exportExcel(s.name, s.data)">Excel</button>
+    <button (click)="exportPdf(s.name, s.data)">PDF</button>
+  </section>
+
+</div>

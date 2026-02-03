@@ -1,0 +1,76 @@
+<div class="container mt-3">
+
+    <h4 class="mb-3">Other Expense</h4>
+
+    <form #expForm="ngForm" class="card p-3 mb-4 shadow-sm">
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <label>Date</label>
+                <input type="date" class="form-control" name="expense_date" [(ngModel)]="form.expense_date" required />
+            </div>
+
+            <div class="col-md-4">
+                <label>Expense Title</label>
+                <input class="form-control" name="expense_title" [(ngModel)]="form.expense_title" required />
+            </div>
+
+            <div class="col-md-3">
+                <label>Amount</label>
+                <input type="number" class="form-control" name="amount" [(ngModel)]="form.amount" min="0" required />
+            </div>
+
+            <div class="col-md-6">
+                <label>Remarks</label>
+                <input class="form-control" name="remarks" [(ngModel)]="form.remarks" />
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-success mt-3" [disabled]="expForm.invalid || saving"
+            (click)="save(expForm)">
+            {{ editMode ? 'Update' : 'Save' }}
+        </button>
+
+        <div *ngIf="successMsg" class="alert alert-success mt-3">
+            {{ lastAction === 'update'
+            ? 'Expense updated successfully'
+            : 'Expense added successfully'
+            }}
+        </div>
+
+    </form>
+
+    <h5>Other Expense Records</h5>
+
+    <table class="table table-bordered table-sm shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let r of list">
+                <td>{{ r.expense_date }}</td>
+                <td>{{ r.expense_title }}</td>
+                <td>{{ r.amount }}</td>
+                <td>{{ r.remarks || '-' }}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" (click)="editRow(r)">
+                        Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteRow(r.id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,115 @@
+<div class="container mt-3">
+
+  <h4 class="mb-3">Plywood Purchase</h4>
+
+  <form #plyForm="ngForm" class="card p-3 mb-4">
+
+    <div class="row g-3">
+
+      <!-- Purchase Date -->
+      <div class="col-md-3">
+        <label>Date</label>
+        <input type="date" class="form-control" name="purchase_date" [(ngModel)]="form.purchase_date" required>
+      </div>
+
+      <!-- Square Feet -->
+      <div class="col-md-3">
+        <label>Square Feet</label>
+        <input type="number" class="form-control" name="square_feet" [(ngModel)]="form.square_feet"
+          (ngModelChange)="calculateTotal()" required min="0.01">
+      </div>
+
+      <!-- Rate per Sqft -->
+      <div class="col-md-3">
+        <label>Rate / Sqft</label>
+        <input type="number" class="form-control" name="rate_per_sqft" [(ngModel)]="form.rate_per_sqft"
+          (ngModelChange)="calculateTotal()" required min="0.01">
+      </div>
+
+      <!-- Sqft Amount -->
+      <div class="col-md-3">
+        <label>Sqft Amount</label>
+        <input type="number" class="form-control" [value]="sqftAmount" readonly>
+      </div>
+
+      <!-- Transportation -->
+      <div class="col-md-3">
+        <label>Transportation</label>
+        <input type="number" class="form-control" name="transportation" [(ngModel)]="form.transportation"
+          (ngModelChange)="calculateTotal()" required min="0">
+      </div>
+
+      <!-- Total Expense -->
+      <div class="col-md-3">
+        <label>Total Expense</label>
+        <input type="number" class="form-control" [value]="totalExpense" readonly>
+      </div>
+
+      <!-- Paid -->
+      <div class="col-md-3">
+        <label>Paid</label>
+        <select class="form-control" name="paid" [(ngModel)]="form.paid" required>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <!-- Remarks -->
+      <div class="col-md-6">
+        <label>Remarks</label>
+        <input type="text" class="form-control" name="remarks" [(ngModel)]="form.remarks" placeholder="Optional notes">
+      </div>
+
+    </div>
+
+    <!-- Save Button -->
+    <button type="button" class="btn btn-success mt-3" [disabled]="plyForm.invalid || saving" (click)="save(plyForm)">
+      {{ editMode ? 'Update' : 'Save' }}
+    </button>
+
+
+    <!-- Success Message -->
+    <div *ngIf="successMsg" class="alert alert-success mt-3">
+      {{ lastAction === 'update' ? 'Entry updated successfully' : 'Entry created successfully' }}
+    </div>
+
+
+  </form>
+
+  <!-- Records Table -->
+  <h5>Plywood Purchase Records</h5>
+
+  <table class="table table-bordered table-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Sqft</th>
+        <th>Rate</th>
+        <th>Sqft Amount</th>
+        <th>Transport</th>
+        <th>Total Expense</th>
+        <th>Paid</th>
+        <th>Remarks</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of list">
+        <td>{{ r.purchase_date }}</td>
+        <td>{{ r.square_feet }}</td>
+        <td>{{ r.rate_per_sqft }}</td>
+        <td>{{ r.sqft_amount }}</td>
+        <td>{{ r.transportation }}</td>
+        <td>{{ r.total_expense }}</td>
+        <td>{{ r.paid }}</td>
+        <td>{{ r.remarks }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" (click)="editRow(r)">Edit</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteRow(r.id)">Delete</button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+</div>

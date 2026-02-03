@@ -1,0 +1,29 @@
+<div style="max-width:400px;margin:80px auto">
+
+ <h3 style="
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    color: #000a9d;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-family: Arial, Helvetica, sans-serif;
+">
+    MIS Login
+</h3>
+
+
+  <input class="form-control mb-3"
+         placeholder="Username"
+         [(ngModel)]="username">
+
+  <input class="form-control mb-3"
+         type="password"
+         placeholder="Password"
+         [(ngModel)]="password">
+
+  <button class="btn btn-primary w-100" (click)="login()">
+    Login
+  </button>
+
+</div>

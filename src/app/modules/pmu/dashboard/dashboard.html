@@ -1,0 +1,88 @@
+<div class="container mt-4">
+
+  <h3 class="text-center mb-4">PMU Dashboard</h3>
+
+  <div class="row text-center mb-4">
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Total Wood</h6>
+        <h4>₹ {{ totalWoodExpense }}</h4>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Plywood</h6>
+        <h4>₹ {{ totalPlywoodPurchase }}</h4>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Accessories</h6>
+        <h4>₹ {{ totalAccessories }}</h4>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Labour</h6>
+        <h4>₹ {{ totalLabourCost }}</h4>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card p-3 shadow-sm">
+        <h6>Other Expenses</h6>
+        <h4>₹ {{ totalOtherExpenses }}</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-4 mb-4" (click)="goTo('wood-expense')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Wood Expense</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('plywood-purchase')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Plywood Purchase</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('accessories')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Accessories</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('labour')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Labour Cost</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('team-ledger')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Team Ledger</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('asset-ledger')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Asset Ledger</h5>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4" (click)="goTo('other-expense')">
+      <div class="card h-100 shadow-sm text-center p-3" style="cursor:pointer">
+        <h5>Other Expenses</h5>
+      </div>
+    </div>
+
+  </div>
+
+</div>

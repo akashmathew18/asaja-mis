@@ -1,0 +1,105 @@
+<div class="container mt-3">
+
+    <h4 class="mb-3">Asset Ledger</h4>
+
+    <form #assetForm="ngForm" class="card p-3 mb-4">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label>Asset Name</label>
+                <input class="form-control" name="asset_name" [(ngModel)]="form.asset_name" required />
+            </div>
+
+            <div class="col-md-4">
+                <label>Company Name</label>
+                <input class="form-control" name="company_name" [(ngModel)]="form.company_name" required />
+            </div>
+
+            <div class="col-md-4">
+                <label>Purchase Date</label>
+                <input type="date" class="form-control" name="purchase_date" [(ngModel)]="form.purchase_date"
+                    required />
+            </div>
+
+            <div class="col-md-3">
+                <label>Warranty</label>
+                <select class="form-control" name="warranty" [(ngModel)]="form.warranty" (change)="onWarrantyChange()"
+                    required>
+                    <option value="" disabled>Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="col-md-3" *ngIf="form.warranty === 'Yes'">
+                <label>Warranty Expiry</label>
+                <input type="date" class="form-control" name="warranty_expiry" [(ngModel)]="form.warranty_expiry"
+                    required />
+            </div>
+
+            <div class="col-md-3">
+                <label>Asset Amount</label>
+                <input type="number" class="form-control" name="asset_amount" [(ngModel)]="form.asset_amount" min="0"
+                    required />
+            </div>
+
+            <div class="col-md-6">
+                <label>Remarks</label>
+                <input class="form-control" name="remarks" [(ngModel)]="form.remarks" />
+            </div>
+
+        </div>
+
+        <button type="button" class="btn btn-success mt-3" [disabled]="assetForm.invalid || saving"
+            (click)="save(assetForm)">
+            {{ editMode ? 'Update' : 'Save' }}
+        </button>
+
+        <div *ngIf="successMsg" class="alert alert-success mt-3">
+            {{ lastAction === 'update'
+            ? 'Asset updated successfully'
+            : 'Asset added successfully'
+            }}
+        </div>
+
+    </form>
+
+    <h5>Asset List</h5>
+
+    <table class="table table-bordered table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Asset</th>
+                <th>Company</th>
+                <th>Amount</th>
+                <th>Warranty</th>
+                <th>Expiry</th>
+                <th>Remarks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let r of list">
+                <td>{{ r.purchase_date }}</td>
+                <td>{{ r.asset_name }}</td>
+                <td>{{ r.company_name }}</td>
+                <td>{{ r.asset_amount }}</td>
+                <td>{{ r.warranty }}</td>
+                <td>{{ r.warranty_expiry || '-' }}</td>
+                <td>{{ r.remarks || '-' }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" (click)="editRow(r)">
+                        Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteRow(r.asset_id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

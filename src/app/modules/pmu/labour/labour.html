@@ -1,0 +1,129 @@
+<div class="container mt-3">
+
+  <h4 class="mb-3">Labour Cost</h4>
+
+  <form #labForm="ngForm" class="card p-3 mb-4">
+
+    <div class="row g-3">
+
+      <div class="col-md-3">
+        <label>Date</label>
+        <input type="date" class="form-control" name="work_date" [(ngModel)]="form.work_date" required>
+      </div>
+
+      <div class="col-md-3">
+        <label>Team</label>
+        <input class="form-control" name="team_name" [(ngModel)]="form.team_name" required>
+      </div>
+
+      <div class="col-md-3">
+        <label>Basis</label>
+        <select class="form-control" name="basis" [(ngModel)]="form.basis" (change)="onBasisChange()" required>
+          <option *ngFor="let b of basisOptions" [value]="b">
+            {{ b }}
+          </option>
+        </select>
+
+      </div>
+
+      <!-- COT FIELDS -->
+      <ng-container *ngIf="form.basis === 'COT'">
+
+        <div class="col-md-3">
+          <label>No. of COT</label>
+          <input type="number" class="form-control" name="cot_count" [(ngModel)]="form.cot_count"
+            (ngModelChange)="calculateTotal()" required min="1">
+        </div>
+
+        <div class="col-md-3">
+          <label>Rate per COT</label>
+          <input type="number" class="form-control" name="rate_per_cot" [(ngModel)]="form.rate_per_cot"
+            (ngModelChange)="calculateTotal()" required min="0">
+        </div>
+
+      </ng-container>
+
+      <!-- DAILY FIELDS -->
+      <ng-container *ngIf="form.basis === 'Daily'">
+
+        <div class="col-md-3">
+          <label>No. of Days</label>
+          <input type="number" class="form-control" name="daily_count" [(ngModel)]="form.daily_count"
+            (ngModelChange)="calculateTotal()" required min="1">
+        </div>
+
+        <div class="col-md-3">
+          <label>Rate per Day</label>
+          <input type="number" class="form-control" name="rate_per_day" [(ngModel)]="form.rate_per_day"
+            (ngModelChange)="calculateTotal()" required min="0">
+        </div>
+
+      </ng-container>
+
+      <div class="col-md-3">
+        <label>Total Amount</label>
+        <input class="form-control" [value]="totalAmount" readonly>
+      </div>
+
+      <div class="col-md-3">
+        <label>Paid</label>
+        <select class="form-control" name="paid" [(ngModel)]="form.paid" required>
+          <option *ngFor="let p of paidOptions" [value]="p">
+            {{ p }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Remarks -->
+      <div class="col-md-6">
+        <label>Remarks</label>
+        <input type="text" class="form-control" name="remarks" [(ngModel)]="form.remarks" placeholder="Optional notes">
+      </div>
+
+    </div>
+
+    <!-- SAVE BUTTON -->
+
+    <button type="button" class="btn btn-success mt-3" [disabled]="labForm.invalid || saving" (click)="save(labForm)">
+      {{ editMode ? 'Update' : 'Save' }}
+    </button>
+
+    <div *ngIf="successMsg" class="alert alert-success mt-3">
+      {{ lastAction === 'update' ? 'Entry updated successfully' : 'Entry created successfully' }}
+    </div>
+
+
+  </form>
+
+  <h5>Labour Records</h5>
+
+  <table class="table table-bordered table-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Team</th>
+        <th>Basis</th>
+        <th>Total</th>
+        <th>Paid</th>
+        <th>Remarks</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of list">
+        <td>{{ r.work_date }}</td>
+        <td>{{ r.team_name }}</td>
+        <td>{{ r.basis }}</td> 
+        <td>{{ r.total_amount }}</td>
+        <td>{{ r.paid }}</td>
+        <td>{{ r.remarks }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" (click)="editRow(r)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteRow(r.id)">Delete</button>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>
