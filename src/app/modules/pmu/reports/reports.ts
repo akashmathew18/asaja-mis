@@ -111,7 +111,6 @@ export class PmuReports implements OnInit {
   }
 
 
-
   /* ---------- UTIL ---------- */
   sum(list: any[], key: string): number {
     return list.reduce((a, b) => a + Number(b[key] || 0), 0);
@@ -143,18 +142,6 @@ export class PmuReports implements OnInit {
   /* ---------- EXPORT ALL ---------- */
   exportAllPDF() {
     this.exportPDF('PMU-All-Reports', [
-      ...this.wood,
-      ...this.plywood,
-      ...this.labour,
-      ...this.accessories,
-      ...this.assets,
-      ...this.teamLedger,
-      ...this.otherExpense
-    ]);
-  }
-
-  exportAllExcel() {
-    this.exportExcel('PMU-All-Reports', [
       ...this.wood,
       ...this.plywood,
       ...this.labour,

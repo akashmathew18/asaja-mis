@@ -13,8 +13,14 @@
 
             <div class="col-md-4">
                 <label>Expense Title</label>
-                <input class="form-control" name="expense_title" [(ngModel)]="form.expense_title" required />
+                <select class="form-control" name="expense_title_code" [(ngModel)]="form.expense_title_code" required>
+                    <option value="" disabled>Select Expense</option>
+                    <option *ngFor="let e of expenseTitles" [value]="e.list_code">
+                        {{ e.name }}
+                    </option>
+                </select>
             </div>
+
 
             <div class="col-md-3">
                 <label>Amount</label>

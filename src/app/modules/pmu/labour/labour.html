@@ -13,8 +13,14 @@
 
       <div class="col-md-3">
         <label>Team</label>
-        <input class="form-control" name="team_name" [(ngModel)]="form.team_name" required>
+        <select class="form-control" name="team_name" [(ngModel)]="form.team_name" required>
+          <option value="" disabled>Select Team</option>
+          <option *ngFor="let t of teams" [value]="t.team_name">
+            {{ t.team_name }}
+          </option>
+        </select>
       </div>
+
 
       <div class="col-md-3">
         <label>Basis</label>
@@ -47,14 +53,14 @@
       <ng-container *ngIf="form.basis === 'Daily'">
 
         <div class="col-md-3">
-          <label>No. of Days</label>
-          <input type="number" class="form-control" name="daily_count" [(ngModel)]="form.daily_count"
+          <label>No. of labour</label>
+          <input type="number" class="form-control" name="labour_count" [(ngModel)]="form.labour_count"
             (ngModelChange)="calculateTotal()" required min="1">
         </div>
 
         <div class="col-md-3">
-          <label>Rate per Day</label>
-          <input type="number" class="form-control" name="rate_per_day" [(ngModel)]="form.rate_per_day"
+          <label>Rate per labour</label>
+          <input type="number" class="form-control" name="rate_per_labour" [(ngModel)]="form.rate_per_labour"
             (ngModelChange)="calculateTotal()" required min="0">
         </div>
 
@@ -65,14 +71,14 @@
         <input class="form-control" [value]="totalAmount" readonly>
       </div>
 
-      <div class="col-md-3">
+      <!-- <div class="col-md-3">
         <label>Paid</label>
         <select class="form-control" name="paid" [(ngModel)]="form.paid" required>
           <option *ngFor="let p of paidOptions" [value]="p">
             {{ p }}
           </option>
         </select>
-      </div>
+      </div> -->
 
       <!-- Remarks -->
       <div class="col-md-6">
@@ -104,7 +110,6 @@
         <th>Team</th>
         <th>Basis</th>
         <th>Total</th>
-        <th>Paid</th>
         <th>Remarks</th>
         <th>Actions</th>
       </tr>
@@ -115,7 +120,6 @@
         <td>{{ r.team_name }}</td>
         <td>{{ r.basis }}</td>
         <td>{{ r.total_amount }}</td>
-        <td>{{ r.paid }}</td>
         <td>{{ r.remarks }}</td>
         <td>
           <button class="btn btn-sm btn-warning" (click)="editRow(r)">Edit</button>

@@ -18,6 +18,8 @@ export class PmuOtherExpense implements OnInit {
   form: any = this.defaultForm();
   list: any[] = [];
 
+  expenseTitles: any[] = [];
+
   saving = false;
   successMsg = false;
 
@@ -32,16 +34,27 @@ export class PmuOtherExpense implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
+
+
   ngOnInit(): void {
-    this.firmCode = this.route.parent?.snapshot.paramMap.get('firmCode') || '';
-    if (this.firmCode) {
-      this.loadList();
-    }
+    this.firmCode = this.route.parent?.snapshot.paramMap.get('firmCode')!;
+    this.loadExpenseTitles();
+    this.loadList();
   }
+
+  loadExpenseTitles() {
+    this.backend.getExpenseTitleList(this.firmCode).subscribe((res: any) => {
+      if (res.success) {
+        this.expenseTitles = res.data;
+      }
+    });
+  }
+
 
   defaultForm() {
     return {
       expense_date: '',
+      expense_title_code: '',
       expense_title: '',
       amount: null,
       remarks: ''

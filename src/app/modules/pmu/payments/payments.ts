@@ -6,28 +6,26 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Pmu } from '../../../core/services/pmu';
 
 @Component({
-  selector: 'app-pmu-wood-expense',
+  selector: 'app-pmu-team-ledger',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './wood-expense.html'
+  templateUrl: './payments.html',
+  styleUrls: ['./payments.css']
 })
-export class PmuWood implements OnInit {
+export class PmuPayments implements OnInit {
 
   firmCode!: string;
 
+  entryTypes = ['ADVANCE', 'PAYMENT'];
+
   form: any = {
-    expense_date: '',
-    wood_type: '',
-    cubic: null,
-    rate_per_cubic: null,
-    cutting_expense: null,
-    planing_expense: null,
-    transportation_expense: null,
+    entry_date: '',
     team_name: '',
+    entry_type: 'ADVANCE',
+    amount: null,
     remarks: ''
   };
 
-  totalExpense = 0;
   list: any[] = [];
 
   teams: any[] = [];
@@ -51,14 +49,12 @@ export class PmuWood implements OnInit {
     this.firmCode = this.route.parent?.snapshot.paramMap.get('firmCode')!;
 
     if (!this.firmCode) {
-      console.error('❌ firmCode missing in wood-expense');
+      console.error('❌ firmCode missing in team-ledger');
       return;
     }
-
     this.loadTeams();
     this.loadList();
   }
-
 
   loadTeams() {
     this.backend.getPmuTeams(this.firmCode).subscribe((res: any) => {
@@ -70,19 +66,9 @@ export class PmuWood implements OnInit {
   }
 
 
-  // ---------------- TOTAL CALCULATION ----------------
-  calculateTotal() {
-    const cubic = Number(this.form.cubic) || 0;
-    const rate = Number(this.form.rate_per_cubic) || 0;
-    const cut = Number(this.form.cutting_expense) || 0;
-    const plan = Number(this.form.planing_expense) || 0;
-    const trans = Number(this.form.transportation_expense) || 0;
-
-    this.totalExpense = (cubic * rate) + cut + plan + trans;
-  }
-
   // ---------------- SAVE / UPDATE ----------------
   save(formRef: NgForm) {
+
     if (formRef.invalid || this.saving) return;
 
     this.saving = true;
@@ -90,8 +76,8 @@ export class PmuWood implements OnInit {
 
     const payload = {
       firm_code: this.firmCode,
-      created_by: this.auth.getUser().userid,
-      total_expense: this.totalExpense,
+      created_by: this.auth.getUserid
+        (),
       ...this.form
     };
 
@@ -100,18 +86,11 @@ export class PmuWood implements OnInit {
 
       this.lastAction = 'update';
 
-      this.backend.updatePmuWood({
+      this.backend.updatePmuTeamLedger({
         id: this.editId,
         ...payload
       }).subscribe({
-        next: (res: any) => {
-          if (!res.success) {
-            alert(res.message || 'Update failed');
-            this.saving = false;
-            return;
-          }
-          this.afterSuccess(formRef);
-        },
+        next: () => this.afterSuccess(formRef),
         error: () => {
           alert('Server error');
           this.saving = false;
@@ -124,21 +103,14 @@ export class PmuWood implements OnInit {
 
       this.lastAction = 'create';
 
-      this.backend.addPmuWood(payload).subscribe({
-        next: (res: any) => {
-          if (!res.success) {
-            alert(res.message || 'Save failed');
+      this.backend.addPmuTeamLedger(payload)
+        .subscribe({
+          next: () => this.afterSuccess(formRef),
+          error: () => {
+            alert('Server error');
             this.saving = false;
-            return;
           }
-          this.afterSuccess(formRef);
-        },
-        error: () => {
-          alert('Server error');
-          this.saving = false;
-        }
-      });
-
+        });
     }
   }
 
@@ -162,11 +134,10 @@ export class PmuWood implements OnInit {
 
   // ---------------- LOAD LIST ----------------
   loadList() {
-    this.backend.getPmuWoodList(this.firmCode).subscribe((res: any) => {
+    this.backend.getPmuTeamLedgerList(this.firmCode).subscribe((res: any) => {
       if (res.success) {
         this.list = res.data;
         this.cdr.markForCheck();
-
       }
     });
   }
@@ -174,34 +145,24 @@ export class PmuWood implements OnInit {
   // ---------------- RESET ----------------
   resetForm() {
     this.form = {
-      expense_date: '',
-      wood_type: '',
-      cubic: null,
-      rate_per_cubic: null,
-      cutting_expense: null,
-      planing_expense: null,
-      transportation_expense: null,
+      entry_date: '',
       team_name: '',
+      entry_type: 'ADVANCE',
+      amount: null,
       remarks: ''
     };
-    this.totalExpense = 0;
   }
 
   // ---------------- EDIT ----------------
   editRow(row: any) {
     this.form = {
-      expense_date: row.expense_date,
-      wood_type: row.wood_type,
-      cubic: row.cubic,
-      rate_per_cubic: row.rate_per_cubic,
-      cutting_expense: row.cutting_expense,
-      planing_expense: row.planing_expense,
-      transportation_expense: row.transportation_expense,
+      entry_date: row.entry_date,
       team_name: row.team_name,
+      entry_type: row.entry_type,
+      amount: row.amount,
       remarks: row.remarks
     };
 
-    this.totalExpense = row.total_expense;
     this.editMode = true;
     this.editId = row.id;
 
@@ -212,10 +173,9 @@ export class PmuWood implements OnInit {
   deleteRow(id: number) {
     if (!confirm('Delete this record?')) return;
 
-    this.backend.deletePmuWood({
+    this.backend.deletePmuTeamLedger({
       id: id,
       firm_code: this.firmCode
     }).subscribe(() => this.loadList());
   }
-
 }

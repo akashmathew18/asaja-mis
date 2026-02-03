@@ -26,15 +26,18 @@ export class PmuLabour implements OnInit {
     cot_count: null,
     rate_per_cot: null,
 
-    daily_count: null,
-    rate_per_day: null,
+    labour_count: null,
+    rate_per_labour: null,
 
-    paid: 'No',
+    // paid: 'No',
     remarks: ''
   };
 
   totalAmount = 0;
   list: any[] = [];
+
+  teams: any[] = [];
+
 
   isEditingPrefill = false;
 
@@ -62,15 +65,25 @@ export class PmuLabour implements OnInit {
       console.error('❌ firmCode missing in wood-expense');
       return;
     }
-
+    this.loadTeams();
     this.loadList();
   }
+
+  loadTeams() {
+    this.backend.getPmuTeams(this.firmCode).subscribe((res: any) => {
+      if (res.success) {
+        this.teams = res.data;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
 
   /* ---------------- BASIS CHANGE ---------------- */
   onBasisChange() {
     if (this.form.basis === 'COT') {
-      this.form.daily_count = null;
-      this.form.rate_per_day = null;
+      this.form.labour_count = null;
+      this.form.rate_per_labour = null;
     } else {
       this.form.cot_count = null;
       this.form.rate_per_cot = null;
@@ -89,8 +102,8 @@ export class PmuLabour implements OnInit {
     }
 
     if (this.form.basis === 'Daily') {
-      const d = Number(this.form.daily_count) || 0;
-      const r = Number(this.form.rate_per_day) || 0;
+      const d = Number(this.form.labour_count) || 0;
+      const r = Number(this.form.rate_per_labour) || 0;
       this.totalAmount = d * r;
     }
   }
@@ -114,8 +127,8 @@ export class PmuLabour implements OnInit {
       cot_count: this.form.basis === 'COT' ? this.form.cot_count : null,
       rate_per_cot: this.form.basis === 'COT' ? this.form.rate_per_cot : null,
 
-      daily_count: this.form.basis === 'Daily' ? this.form.daily_count : null,
-      rate_per_day: this.form.basis === 'Daily' ? this.form.rate_per_day : null,
+      labour_count: this.form.basis === 'Daily' ? this.form.labour_count : null,
+      rate_per_labour: this.form.basis === 'Daily' ? this.form.rate_per_labour : null,
 
       total_amount: this.totalAmount,
       paid: this.form.paid,
@@ -206,8 +219,8 @@ export class PmuLabour implements OnInit {
       basis: 'COT',
       cot_count: null,
       rate_per_cot: null,
-      daily_count: null,
-      rate_per_day: null,
+      labour_count: null,
+      rate_per_labour: null,
       paid: 'No',
       remarks: ''
     };
@@ -228,8 +241,8 @@ export class PmuLabour implements OnInit {
       basis: row.basis,
       cot_count: row.cot_count,
       rate_per_cot: row.rate_per_cot,
-      daily_count: row.daily_count,
-      rate_per_day: row.rate_per_day,
+      labour_count: row.labour_count,
+      rate_per_labour: row.rate_per_labour,
       paid: row.paid,
       remarks: row.remarks
     };

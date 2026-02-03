@@ -9,12 +9,27 @@ import { CommonService } from './common';
 export class Pmu {
 
 
-  // private baseUrl = 'http://localhost/mis/api';
-  // private baseUrl = 'https://mis.asajaitsolutions.com/api';
   private baseUrl = '';
 
   constructor(private http: HttpClient, private common: CommonService) {
     this.baseUrl = common.baseUrl;
+  }
+
+  // ---------- PMU TEAMS ----------
+  getPmuTeams(firmCode: string) {
+    return this.http.post(
+      `${this.baseUrl}/modules/pmu/teams/list.php`,
+      { firm_code: firmCode }
+    );
+  }
+
+  // ---------- PMU TEAMS ----------
+  /* Expense Title Dropdown */
+  getExpenseTitleList(firmCode: string) {
+    return this.http.post<any>(
+      `${this.baseUrl}/modules/pmu/expenselist/list.php`,
+      { firm_code: firmCode }
+    );
   }
 
   // ---------- PMU REPORTS ----------

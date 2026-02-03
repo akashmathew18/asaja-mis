@@ -7,9 +7,7 @@ import { CommonService } from './common';
 })
 export class BackendconnectionService {
 
-  // private baseUrl = 'http://localhost/mis/api';
-  // private baseUrl = 'https://mis.asajaitsolutions.com/api';
-  baseUrl = '';
+  private baseUrl = '';
 
 
 
