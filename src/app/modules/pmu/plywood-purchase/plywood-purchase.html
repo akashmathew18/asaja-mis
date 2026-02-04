@@ -14,21 +14,21 @@
 
       <!-- Square Feet -->
       <div class="col-md-3">
-        <label>Square Feet</label>
+        <label>No. of Plywood (Unit)</label>
         <input type="number" class="form-control" name="square_feet" [(ngModel)]="form.square_feet"
           (ngModelChange)="calculateTotal()" required min="0.01">
       </div>
 
       <!-- Rate per Sqft -->
       <div class="col-md-3">
-        <label>Rate / Sqft</label>
+        <label>Rate / Unit</label>
         <input type="number" class="form-control" name="rate_per_sqft" [(ngModel)]="form.rate_per_sqft"
           (ngModelChange)="calculateTotal()" required min="0.01">
       </div>
 
       <!-- Sqft Amount -->
       <div class="col-md-3">
-        <label>Sqft Amount</label>
+        <label>Plywood Amount</label>
         <input type="number" class="form-control" [value]="sqftAmount" readonly>
       </div>
 
@@ -83,9 +83,9 @@
     <thead class="table-dark">
       <tr>
         <th>Date</th>
-        <th>Sqft</th>
-        <th>Rate</th>
-        <th>Sqft Amount</th>
+        <th>No. Of Plywood (Unit)</th>
+        <th>Rate/unit</th>
+        <th>plywood Amount</th>
         <th>Transport</th>
         <th>Total Expense</th>
         <th>Paid</th>

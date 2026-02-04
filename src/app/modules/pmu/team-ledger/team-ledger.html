@@ -1,0 +1,86 @@
+<div class="container mt-3">
+
+    <h4>Team Ledger</h4>
+
+    <!-- FILTERS -->
+    <!-- FILTERS -->
+    <div class="row mb-3 justify-content-center" style="gap:12px; align-items:flex-end;">
+
+        <div style="width:180px;">
+            <label class="form-label mb-1">Team</label>
+            <select class="form-select form-select-sm" [(ngModel)]="teamName" (change)="loadLedger()">
+                <option value="">All Teams</option>
+                <option *ngFor="let t of teams" [value]="t.team_name">
+                    {{ t.team_name }}
+                </option>
+            </select>
+        </div>
+
+        <div style="width:220px;">
+            <label class="form-label mb-1">Search</label>
+            <input class="form-control form-control-sm" placeholder="Search anything..." [(ngModel)]="search"
+                (keyup)="loadLedger()">
+        </div>
+
+        <div style="width:150px;">
+            <label class="form-label mb-1">From</label>
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="fromDate">
+        </div>
+
+        <div style="width:150px;">
+            <label class="form-label mb-1">To</label>
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="toDate">
+        </div>
+
+        <div style="width:110px;">
+            <button class="btn btn-primary btn-sm w-100" (click)="loadLedger()">
+                Apply
+            </button>
+        </div>
+
+        <div style="width:110px;">
+            <button class="btn btn-outline-secondary btn-sm w-100" (click)="clearFilters()" [disabled]="!hasFilters()">
+                Clear
+            </button>
+        </div>
+
+    </div>
+
+
+
+    <!-- LEDGER -->
+    <table class="table table-bordered table-sm" *ngIf="ledger.length">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Txn ID</th>
+                <th>Team</th>
+                <th>Particulars</th>
+                <th>Remarks</th>
+                <th>Credit</th>
+                <th>Debit</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let r of ledger">
+                <td>{{ r.entry_date }}</td>
+                <td>{{ r.transaction_id }}</td>
+                <td>{{ r.team_name }}</td>
+                <td>{{ r.particulars }}</td>
+                <td>{{ r.remarks }}</td>
+                <td class="text-success">{{ r.credit }}</td>
+                <td class="text-danger">{{ r.debit }}</td>
+                <td class="fw-bold">{{ r.balance }}</td>
+            </tr>
+
+            <tr class="fw-bold table-secondary">
+                <td colspan="7">Final Balance (Credit − Debit)</td>
+                <td>{{ finalBalance() }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>

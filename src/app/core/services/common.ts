@@ -5,6 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class CommonService {
 
-  baseUrl = 'http://localhost/mis/api';
-  // baseUrl = 'https://mis.asajaitsolutions.com/api';
+  // baseUrl = 'http://localhost/mis/api';
+  baseUrl = 'https://mis.asajaitsolutions.com/api';
 }

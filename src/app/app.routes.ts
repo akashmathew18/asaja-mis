@@ -9,7 +9,7 @@ import { PmuWood } from './modules/pmu/wood-expense/wood-expense';
 import { PmuPlywood } from './modules/pmu/plywood-purchase/plywood-purchase';
 import { PmuAccessories } from './modules/pmu/accessories/accessories';
 import { PmuLabour } from './modules/pmu/labour/labour';
-// import { PmuTeamLedger } from './modules/pmu/team-ledger/team-ledger';
+import { PmuTeamLedger } from './modules/pmu/team-ledger/team-ledger';
 import { PmuAssetLedger } from './modules/pmu/asset-ledger/asset-ledger';
 import { PmuOtherExpense } from './modules/pmu/other-expenses/other-expenses';
 import { PmuReports } from './modules/pmu/reports/reports';
@@ -40,7 +40,7 @@ export const routes: Routes = [
       { path: 'plywood-purchase', component: PmuPlywood },
       { path: 'accessories', component: PmuAccessories },
       { path: 'labour', component: PmuLabour },
-      // { path: 'team-ledger', component: PmuTeamLedger },
+      { path: 'team-ledger', component: PmuTeamLedger },
       { path: 'asset-ledger', component: PmuAssetLedger },
       { path: 'other-expense', component: PmuOtherExpense },
       {path: 'payments', component: PmuPayments},

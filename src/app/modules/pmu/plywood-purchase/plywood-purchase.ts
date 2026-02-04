@@ -63,6 +63,7 @@ export class PmuPlywood implements OnInit {
 
     this.sqftAmount = sqft * rate;
     this.totalExpense = this.sqftAmount + transport;
+    this.totalExpense = Number(this.totalExpense.toFixed(2));
   }
 
   // ---------------- SAVE / UPDATE ----------------

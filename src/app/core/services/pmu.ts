@@ -23,6 +23,24 @@ export class Pmu {
     );
   }
 
+  /* ================= TEAM LEDGER (Payments + Labour Credits) ================= */
+
+  getTeamLedger(payload: {
+    firm_code: string;
+    team_name?: string;
+    search?: string;
+    from_date?: string;
+    to_date?: string;
+  }) {
+    return this.http.post(
+      `${this.baseUrl}/modules/pmu/reports/team-ledger.php`,
+      payload
+    );
+  }
+
+
+
+
   // ---------- PMU TEAMS ----------
   /* Expense Title Dropdown */
   getExpenseTitleList(firmCode: string) {
@@ -97,25 +115,25 @@ export class Pmu {
   // ---------- PMU TEAM LEDGER ----------
   addPmuTeamLedger(data: any) {
     return this.http.post(
-      `${this.baseUrl}/modules/pmu/team-ledger/add.php`,
+      `${this.baseUrl}/modules/pmu/team-payments/add.php`,
       data
     );
   }
 
   getPmuTeamLedgerList(firmCode: string) {
     return this.http.post(
-      `${this.baseUrl}/modules/pmu/team-ledger/list.php`,
+      `${this.baseUrl}/modules/pmu/team-payments/list.php`,
       { firm_code: firmCode }
     );
   }
 
   // ---------- CRUD OPERATIONS----------
   updatePmuTeamLedger(data: any) {
-    return this.http.post(`${this.baseUrl}/modules/pmu/team-ledger/update.php`, data);
+    return this.http.post(`${this.baseUrl}/modules/pmu/team-payments/update.php`, data);
   }
 
   deletePmuTeamLedger(data: any) {
-    return this.http.post(`${this.baseUrl}/modules/pmu/team-ledger/delete.php`, data);
+    return this.http.post(`${this.baseUrl}/modules/pmu/team-payments/delete.php`, data);
   }
 
   // ---------- PMU ACCESSORIES ----------

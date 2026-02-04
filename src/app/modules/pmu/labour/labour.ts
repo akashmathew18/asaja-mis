@@ -99,12 +99,14 @@ export class PmuLabour implements OnInit {
       const c = Number(this.form.cot_count) || 0;
       const r = Number(this.form.rate_per_cot) || 0;
       this.totalAmount = c * r;
+      this.totalAmount = Number(this.totalAmount.toFixed(2));
     }
 
     if (this.form.basis === 'Daily') {
       const d = Number(this.form.labour_count) || 0;
       const r = Number(this.form.rate_per_labour) || 0;
       this.totalAmount = d * r;
+      this.totalAmount = Number(this.totalAmount.toFixed(2));
     }
   }
 

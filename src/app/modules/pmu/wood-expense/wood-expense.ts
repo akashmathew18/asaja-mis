@@ -79,6 +79,7 @@ export class PmuWood implements OnInit {
     const trans = Number(this.form.transportation_expense) || 0;
 
     this.totalExpense = (cubic * rate) + cut + plan + trans;
+    this.totalExpense = parseFloat(this.totalExpense.toFixed(2));
   }
 
   // ---------------- SAVE / UPDATE ----------------

@@ -113,7 +113,8 @@ export class PmuReports implements OnInit {
 
   /* ---------- UTIL ---------- */
   sum(list: any[], key: string): number {
-    return list.reduce((a, b) => a + Number(b[key] || 0), 0);
+    const total = list.reduce((a, b) => a + Number(b[key] || 0), 0);
+    return Math.round(total * 100) / 100;
   }
 
   /* ---------- EXPORT HELPERS ---------- */

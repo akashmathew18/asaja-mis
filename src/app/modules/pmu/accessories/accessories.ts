@@ -61,6 +61,7 @@ export class PmuAccessories implements OnInit {
     const other = Number(this.form.other_expense) || 0;
 
     this.totalExpense = amt + trans + other;
+    this.totalExpense = Number(this.totalExpense.toFixed(2));
     this.cdr.markForCheck();
   }
 

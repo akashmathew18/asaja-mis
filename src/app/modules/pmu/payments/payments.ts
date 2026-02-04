@@ -16,12 +16,12 @@ export class PmuPayments implements OnInit {
 
   firmCode!: string;
 
-  entryTypes = ['ADVANCE', 'PAYMENT'];
+  entryTypes = [/*'ADVANCE'*/, 'PAYMENT'];
 
   form: any = {
     entry_date: '',
     team_name: '',
-    entry_type: 'ADVANCE',
+    entry_type: 'PAYMENT',
     amount: null,
     remarks: ''
   };
