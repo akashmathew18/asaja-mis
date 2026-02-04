@@ -72,7 +72,7 @@ $stmt->bind_param(
   $data['total_expense'],          // d
   $data['paid'],                   // s
   $data['remarks'],                 // s
-  $data['created_by'],             // s
+  $data['created_by']          // s
 
 );
 

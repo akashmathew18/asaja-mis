@@ -18,7 +18,7 @@ $required = [
   'transportation_expense',
   'team_name',
   'total_expense',
-  'created_by',
+  'created_by'
 
 ];
 
@@ -78,7 +78,7 @@ $stmt->bind_param(
   $data['team_name'],              // s
   $data['total_expense'],          // d
   $data['remarks'],                // s
-  $data['created_by'],             // s
+  $data['created_by']         // s
 
 );
 

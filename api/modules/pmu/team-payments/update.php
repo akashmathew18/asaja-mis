@@ -1,22 +1,26 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 require_once "../../../middleware/bootstrap.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 $required = [
+    'id',
     'firm_code',
     'entry_date',
     'team_name',
     'entry_type',
-    'amount',
-    'created_by'
+    'amount'
 ];
 
-foreach ($required as $f) {
-    if (!isset($data[$f])) {
-        echo json_encode(["success" => false, "message" => "Missing field: $f"]);
+foreach ($required as $field) {
+    if (!isset($data[$field])) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Missing field: $field"
+        ]);
         exit;
     }
 }
@@ -28,33 +32,42 @@ if (!in_array($data['entry_type'], $allowedTypes)) {
     exit;
 }
 
-/* OPTIONAL FIELD */
 $remarks = $data['remarks'] ?? null;
 
-$stmt = $conn->prepare("
- INSERT INTO pmu_team_ledger (
-  firm_code,
-  entry_date,
-  team_name,
-  entry_type,
-  amount,
-  remarks,
-  created_by
- )
- VALUES (?,?,?,?,?,?,?)
-");
+/* ---------- SQL ---------- */
+$sql = "
+UPDATE pmu_team_payments SET
+  entry_date=?,
+  team_name=?,
+  entry_type=?,
+  amount=?,
+  remarks=?
+WHERE id=? AND firm_code=?
+";
+
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Prepare failed",
+        "error" => $conn->error
+    ]);
+    exit;
+}
 
 $stmt->bind_param(
-    "ssssdss",
-    $data['firm_code'],
+    "sssdsis",
     $data['entry_date'],
     $data['team_name'],
     $data['entry_type'],
     $data['amount'],
     $remarks,
-    $data['created_by']
+    $data['id'],
+    $data['firm_code']
 );
 
+/* ---------- EXECUTE ---------- */
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);
 } else {

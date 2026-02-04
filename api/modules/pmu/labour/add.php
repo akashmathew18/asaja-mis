@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 require_once "../../../middleware/bootstrap.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -16,7 +17,7 @@ $required = [
 ];
 
 foreach ($required as $f) {
-  if (!isset($data[$f])) {
+  if (empty($data[$f])) {
     echo json_encode(["success" => false, "message" => "Missing field: $f"]);
     exit;
   }
@@ -28,50 +29,79 @@ if (!in_array($data['basis'], ['COT', 'Daily'])) {
   exit;
 }
 
-// if (!in_array($data['paid'], ['Yes', 'No'])) {
-//   echo json_encode(["success" => false, "message" => "Invalid paid value"]);
-//   exit;
-// }
+/* ---------------- AUTO TRANSACTION ID (LCxxxx) ---------------- */
+$prefix = "LC";
+
+$res = $conn->query("
+  SELECT transaction_id 
+  FROM pmu_labour_cost 
+  WHERE transaction_id IS NOT NULL
+  ORDER BY id DESC 
+  LIMIT 1
+");
+
+$lastNo = 0;
+if ($row = $res->fetch_assoc()) {
+  $lastNo = (int) substr($row['transaction_id'], 2);
+}
+
+$transactionId = $prefix . str_pad($lastNo + 1, 2, "0", STR_PAD_LEFT);
 
 /* ---------------- CONDITIONAL FIELDS ---------------- */
-$cotCount = $ratePerCot = $dailyCount = $ratePerDay = null;
+$cotCount = $ratePerCot = $labourCount = $ratePerLabour = null;
 
 if ($data['basis'] === 'COT') {
-  $cotCount = $data['cot_count'];
-  $ratePerCot = $data['rate_per_cot'];
+  $cotCount = $data['cot_count'] ?? null;
+  $ratePerCot = $data['rate_per_cot'] ?? null;
 } else {
-  $dailyCount = $data['labour_count'];
-  $ratePerDay = $data['rate_per_labour'];
+  $labourCount = $data['labour_count'] ?? null;
+  $ratePerLabour = $data['rate_per_labour'] ?? null;
 }
+
+$remarks = $data['remarks'] ?? null;
 
 /* ---------------- INSERT ---------------- */
 $stmt = $conn->prepare("
-INSERT INTO pmu_labour_cost (
- firm_code, work_date, team_name, basis,
- cot_count, rate_per_cot,
- labour_count, rate_per_labour,
- total_amount,  remarks, created_by
-)
-VALUES (?,?,?,?,?,?,?,?,?,?,?)
+  INSERT INTO pmu_labour_cost (
+    transaction_id,
+    firm_code,
+    work_date,
+    team_name,
+    basis,
+    cot_count,
+    rate_per_cot,
+    labour_count,
+    rate_per_labour,
+    total_amount,
+    remarks,
+    created_by
+  ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
 ");
 
 $stmt->bind_param(
-  "ssssiddidss",
+  "sssssididdss",
+  $transactionId,
   $data['firm_code'],
   $data['work_date'],
   $data['team_name'],
   $data['basis'],
   $cotCount,
   $ratePerCot,
-  $dailyCount,
-  $ratePerDay,
+  $labourCount,
+  $ratePerLabour,
   $data['total_amount'],
-  $data['remarks'],
+  $remarks,
   $data['created_by']
 );
 
-echo json_encode(
-  $stmt->execute()
-  ? ["success" => true]
-  : ["success" => false, "error" => $stmt->error]
-);
+if ($stmt->execute()) {
+  echo json_encode([
+    "success" => true,
+    "transaction_id" => $transactionId
+  ]);
+} else {
+  echo json_encode([
+    "success" => false,
+    "error" => $stmt->error
+  ]);
+}

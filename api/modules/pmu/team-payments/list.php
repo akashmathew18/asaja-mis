@@ -14,7 +14,7 @@ if (!$firm_code) {
 
 $sql = "
   SELECT *
-  FROM pmu_team_ledger
+  FROM pmu_team_payments
   WHERE firm_code = ?
   ORDER BY entry_date DESC, id DESC
 ";

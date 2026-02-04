@@ -10,7 +10,7 @@ $stmt = $conn->prepare("
     entry_type,
     amount,
     remarks
-  FROM pmu_team_ledger
+  FROM pmu_team_payments
   WHERE firm_code = ?
   ORDER BY entry_date DESC
 ");
